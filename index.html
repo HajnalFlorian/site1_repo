@@ -44,7 +44,7 @@
 <!-- Bouton qui lance la méthode de chargement du xml -->
 <button onclick="GetXml();">Lancement du chargement du xml</button>
 
-<!--
+
 <script type="text/javascript">
 
 	function GetXml()
@@ -71,42 +71,7 @@
 	
 
 </script>
--->
-<script type="text/javascript">
-	
-	function getXML()
-{
-    var xhttp = new XMLHttpRequest();
 
-    xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200)
-        {
-            var parser = new DOMParser();
-            XMLDoc = parser.parseFromString(this.responseText, "text/html");
-
-            document.getElementById("areaFilms").innerHTML = this.responseText;
-            var films = XMLDoc.getElementsByTagName("titre");
-            var titres = "";
-            var infos = "";
-            var reals = XMLDoc.getElementsByTagName("realisateur");
-            var dates = XMLDoc.getElementsByTagName("date");
-            
-            for (let index = 0; index < films.length; index++) {
-                const element = films[index];
-                const element2 = reals[index];
-                const element3 = dates[index];
-
-                titres = titres + element.innerHTML + "\n";
-                infos = infos + "Film : " + element.innerHTML + " Réal : " + element2.innerHTML + " Date : " + element3.innerHTML + "\n";
-            }
-            document.getElementById("areaTitres").innerHTML = titres;
-            document.getElementById("areaInfos").innerHTML = infos;
-        }
-    };
-    xhttp.open("GET", "http://quizz/MesFilms.xml", true);
-    xhttp.send();
-}
-</script>
 
 
 
