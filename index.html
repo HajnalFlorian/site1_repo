@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
 	<title>Suite cours - HTTP Request</title>
@@ -36,6 +35,9 @@
 	</ul>
 
 <hr>
+
+<h2>Requête .xml</h2>
+
 <!-- Conteneur qui recevra le résultat de la requête -->
 <div id="conteneur_requete"></div>
 
@@ -45,29 +47,35 @@
 
 <script type="text/javascript">
 
-    function GetXml()
-    {
-        //Récupère le conteneur
-        var conteneur = document.getElementById('conteneur_requete');
-        
-        //Déclaration de l'objet xhttp
-        var xhttp = new XMLHttpRequest();
+	function GetXml()
+	{
+		//Récupère le conteneur
+		var conteneur = document.getElementById('conteneur_requete');
+		
+		//Déclaration de l'objet xhttp
+		var xhttp = new XMLHttpRequest();
 
-        xhttp.onreadystatechange = function() 
-        {
-            if (this.readyState == 4 && this.status == 200) 
-            {
-                console.log("Chargment terminé.");
-                conteneur.innerHTML = xhttp.responseText;
-            }
-        };
-        
-        xhttp.open("GET", "etudiants.xml", true);
-        xhttp.send(); 
+		xhttp.onreadystatechange = function() 
+		{
+		    if (this.readyState == 4 && this.status == 200) 
+		    {
+		    	console.log("Chargement terminé.");
+		    	conteneur.innerHTML = xhttp.responseText;
+		    }
+		};
+		
+		xhttp.open("GET", "etudiants.xml", true);
+		xhttp.send(); 
 
-    }
+	}
+	
 
 </script>
+
+
+
+
+
 
 </body>
 </html>
