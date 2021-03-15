@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Suite cours - HTTP Request</title>
@@ -38,9 +39,6 @@
 
 <h2>Requête .xml</h2>
 
-<!-- Conteneur qui recevra le résultat de la requête -->
-<div id="conteneur_requete"></div>
-
 <!-- Bouton qui lance la méthode de chargement du xml -->
 <button onclick="getXML();">Lancement du chargement du xml</button>
 
@@ -53,74 +51,50 @@
 
 </div>
 
-
-<!--
 <script type="text/javascript">
 
-	function GetXml()
-	{
-		//Récupère le conteneur
-		var conteneur = document.getElementById('conteneur_requete');
-		
-		//Déclaration de l'objet xhttp
-		var xhttp = new XMLHttpRequest();
-
-		xhttp.onreadystatechange = function() 
-		{
-		    if (this.readyState == 4 && this.status == 200) 
-		    {
-		    	console.log("Chargement terminé.");
-		    	conteneur.innerHTML = xhttp.responseText;
-		    }
-		};
-		
-		xhttp.open("GET", "etudiants.xml", true);
-		xhttp.send(); 
-
-	}
-	
-
-</script>
--->
-
-<script type="text/javascript">
-	
 	function getXML()
-{
-    var xhttp = new XMLHttpRequest();
+	{
+		//Création de l'objet
+    	var xhttp = new XMLHttpRequest();
 
-    xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200)
-        {
-            var parser = new DOMParser();
-            XMLDoc = parser.parseFromString(this.responseText, "text/html");
+   	 	xhttp.onreadystatechange = function() 
+   	 	{
+	        if (xhttp.readyState == 4 && xhttp.status == 200)//Quand la requête est terminée
+	        {
+	        	//Récupère le contenu du .xml
+	            var parser = new DOMParser();
+	            XMLDoc = parser.parseFromString(this.responseText, "text/html");
 
-            document.getElementById("areaFilms").innerHTML = this.responseText;
-            var films = XMLDoc.getElementsByTagName("titre");
-            var titres = "";
-            var infos = "";
-            var reals = XMLDoc.getElementsByTagName("realisateur");
-            var dates = XMLDoc.getElementsByTagName("date");
-            
-            for (let index = 0; index < films.length; index++) {
-                const element = films[index];
-                const element2 = reals[index];
-                const element3 = dates[index];
+	            //Récupère les éléments du .xml
+	            document.getElementById("area_films").innerHTML = this.responseText;
+	            var films = XMLDoc.getElementsByTagName("titre");
+	            var titres = "";
+	            var infos = "";
+	            var reals = XMLDoc.getElementsByTagName("realisateur");
+	            var dates = XMLDoc.getElementsByTagName("date");
+	            
+	            //Boucle dans ce fichier pour récupérer les informations nécéssaires
+	            for (let index = 0; index < films.length; index++) 
+	            {
+	                const element = films[index];
+	                const element2 = reals[index];
+	                const element3 = dates[index];
 
-                titres = titres + element.innerHTML + "\n";
-                infos = infos + "Film : " + element.innerHTML + " Réal : " + element2.innerHTML + " Date : " + element3.innerHTML + "\n";
-            }
-            document.getElementById("areaTitres").innerHTML = titres;
-            document.getElementById("areaInfos").innerHTML = infos;
+	                titres = titres + element.innerHTML + "\n";
+	                infos = infos + "Film : " + element.innerHTML + "--- Réalisateur : " + element2.innerHTML + "--- Date : " + element3.innerHTML + "\n";
+            	}
+
+            document.getElementById("area_titres").innerHTML = titres;
+            document.getElementById("area_infos").innerHTML = infos;
         }
     };
+
     xhttp.open("GET", "MesFilms.xml", true);
     xhttp.send();
 }
+
 </script>
-
-
-
 
 
 </body>
