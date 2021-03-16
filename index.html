@@ -33,7 +33,10 @@
 </div>
 
 <div>
-	
+	<select name="select_idReal" id="id_selection_idReal" onchange="OnSelectDisplay(this);" multiple>
+    <option id="option1">Veuillez selectionner une option</option>
+
+</select>
 
 </div>
 
@@ -127,7 +130,88 @@ xhttp.onreadystatechange = function() {
 
 
 </script>
+<script type="text/javascript">
 
+	//Variable globale qui reçoit le contenu du fichier xml (string)	
+	var xmlStr;
+	
+	function Init()
+	{
+		var xhttp = new XMLHttpRequest();
+
+   	 	xhttp.onreadystatechange = function() 
+   	 	{
+	        if (xhttp.readyState == 4 && xhttp.status == 200)//Quand la requête est terminée
+	        {
+	        	var parser = new DOMParser();
+				var XMLDoc = parser.parseFromString(this.responseText, "text/html");
+
+				//Le charge dans une variable globale
+				xmlStr = parser.parseFromString(this.responseText, "text/html");
+
+				var x = XMLDoc.getElementsByTagName('film');
+				var liste = document.getElementById('id_selection_idReal');
+
+			 	//Boucle ajoutant les options dans le select
+			 	for(i = 0; i < x.length; i++)
+			 	{
+			 		var option = document.createElement('option');
+			 		option.setAttribute("value", x[i].getAttribute('idreal'));
+			 		var text = document.createTextNode(x[i].getAttribute('idreal'));
+			 		option.appendChild(text);
+			 		liste.appendChild(option);
+			 	}
+
+        	}
+   		}
+
+	    xhttp.open("GET", "MesFilms.xml", true);
+	    xhttp.send();
+
+
+	}
+
+	function OnSelectDisplay(selectObject) 
+	{
+
+		//Récupère les films
+		var x = xmlStr.getElementsByTagName('film');
+
+		//Récupère le conteneur dans lequel les résultats seront stockés
+		var liste = document.getElementById('listeResultat');
+		liste.innerHTML = '';
+
+		//Si les options selectionnées du select correspondent 
+		//à des idreal de film dans le fichier, les ajoute à une liste
+		for(i = 0; i < x.length; i++)
+		{
+			for(var j = 0; j < selectObject.selectedOptions.length; j++)
+			{
+				if(x[i].getAttribute('idreal') == selectObject.selectedOptions[j].value)
+				{
+
+					//Créer un li contenant le titre du film, qui sera rajouté dans une liste
+					var li = document.createElement('li');
+					var txt = document.createTextNode(x[i].firstChild.nextSibling.firstChild.textContent);
+					li.appendChild(txt);
+					document.getElementById('listeResultat').appendChild(li);
+					//-------------------------------------------------------//
+
+				}
+			}
+			
+		}
+	}
+
+
+
+
+
+</script>
+    <!-- Conteneur dans lequel la liste des films sera affichée -->
+<ul id="listeResultat">
+    
+</ul>
 
 </body>
 </html>
