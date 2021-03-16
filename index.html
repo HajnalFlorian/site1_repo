@@ -1,119 +1,80 @@
+<!DOCTYPE html>
 <html>
 <head>
-	<title>Suite cours - HTTP Request</title>
+	<title>cours - HTTP Request</title>
+	<style type="text/css">
+		h1 { color:  #FF0000 }
+		textarea 
+		{
+			border-width: 8px;
+			border-radius: 8px;
+		}
+	</style>
 	<meta charset="utf-8">
 </head>
 <body>
 
-	<h1>HTTP Request</h1>
-
-<hr>
-	Informations :
-	<ul>
-		<li>On récupère un fichier .xml grâce à une requête HTTP.</li>
-		<li>L'objectif est d'afficher le contenu de l'xml dans la page appelante.</li>
-		<li>En utilisant la variable xhttp</li>
-		<li>Pour créer un objet XMLHttpRequest : "var xhttp = new XMLHttpRequest();"</li>
-		<li>La propriété readyState contient le statut de l’objet xhttp créé</li>
-		<li>L’événement onreadystatechange est déclenché chaque fois que readyState change</li>
-		<li>Lors d'une demande de serveur, le readyState passe de 0 à 4:
-			<ul>
-				<li>0: demande non initialisée</li>
-				<li>1: connexion au serveur établie</li>
-				<li>2: demande reçue</li>
-				<li>3: demande de traitement</li>
-				<li>4: demander fini et la réponse est prête</li>
-			</ul>
-		</li>
-		<li>Statut 200 : OK ; Statut 404 : ressource non trouvée.</li>
-		<li>La méthode open (sans argument pour un GET).</li>
-		<li>La méthode GET est plus simple que POST et utilisable dans la plupart des cas.</li>
-		<li>L'URL - un fichier sur un serveur</li>
-		<li>les pages html et les fichiers web doivent être sur le même serveur.</li>
-		<li>Le dernier paramètre permet de définir si async ou non (executer des taches de fond, ne pas attendre de réponse du serveur)</li>
-
-	</ul>
-
-<hr>
+	<h1>Cours HTTP Request</h1>
 
 <h2>Requête .xml</h2>
 
-<!-- Conteneur qui recevra le résultat de la requête -->
-<div id="conteneur_requete"></div>
-
 <!-- Bouton qui lance la méthode de chargement du xml -->
-<button onclick="GetXml();">Lancement du chargement du xml</button>
+<button onclick="getXML();">Charger le XML</button>
 
-<!--
+<!-- Tableau recevant les valeurs -->
+<div id="table">
+
+    <textarea id="area_films"  rows="20" cols="50"></textarea>
+    <textarea id="area_titres"  rows="10" cols="30"></textarea>
+    <br>
+    <textarea id="area_infos"  rows="10" cols="83"></textarea>
+
+</div>
+
 <script type="text/javascript">
 
-	function GetXml()
-	{
-		//Récupère le conteneur
-		var conteneur = document.getElementById('conteneur_requete');
-		
-		//Déclaration de l'objet xhttp
-		var xhttp = new XMLHttpRequest();
-
-		xhttp.onreadystatechange = function() 
-		{
-		    if (this.readyState == 4 && this.status == 200) 
-		    {
-		    	console.log("Chargement terminé.");
-		    	conteneur.innerHTML = xhttp.responseText;
-		    }
-		};
-		
-		xhttp.open("GET", "etudiants.xml", true);
-		xhttp.send(); 
-
-	}
-	
-
-</script>
-
--->
-<script type="text/javascript">
-	
 	function getXML()
-{
-    var xhttp = new XMLHttpRequest();
+	{
+		//Création de l'objet
+    	var xhttp = new XMLHttpRequest();
 
-    xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200)
-        {
-            var parser = new DOMParser();
-            XMLDoc = parser.parseFromString(this.responseText, "text/html");
+   	 	xhttp.onreadystatechange = function() 
+   	 	{
+	        if (xhttp.readyState == 4 && xhttp.status == 200)//Quand la requête est terminée
+	        {
+	        	//Récupère le contenu du .xml
+	            var parser = new DOMParser();
+	            XMLDoc = parser.parseFromString(this.responseText, "text/html");
 
-            document.getElementById("areaFilms").innerHTML = this.responseText;
-            var films = XMLDoc.getElementsByTagName("titre");
-            var titres = "";
-            var infos = "";
-            var reals = XMLDoc.getElementsByTagName("realisateur");
-            var dates = XMLDoc.getElementsByTagName("date");
-            
-            for (let index = 0; index < films.length; index++) {
-                const element = films[index];
-                const element2 = reals[index];
-                const element3 = dates[index];
+	            //Récupère les éléments du .xml
+	            document.getElementById("area_films").innerHTML = this.responseText;
+	            var films = XMLDoc.getElementsByTagName("titre");
+	            var titres = "";
+	            var infos = "";
+	            var reals = XMLDoc.getElementsByTagName("realisateur");
+	            var dates = XMLDoc.getElementsByTagName("date");
+	            
+	            //Boucle dans ce fichier pour récupérer les informations 
+	            for (let index = 0; index < films.length; index++) 
+	            {
+	                const element = films[index];
+	                const element2 = reals[index];
+	                const element3 = dates[index];
 
-                titres = titres + element.innerHTML + "\n";
-                infos = infos + "Film : " + element.innerHTML + " Réal : " + element2.innerHTML + " Date : " + element3.innerHTML + "\n";
-            }
-            document.getElementById("areaTitres").innerHTML = titres;
-            document.getElementById("areaInfos").innerHTML = infos;
+	                titres = titres + element.innerHTML + "\n";
+	                infos = infos + "Film : " + element.innerHTML + "--- Réalisateur : " + element2.innerHTML + "--- Date : " + element3.innerHTML + "\n";
+            	}
+
+            document.getElementById("area_titres").innerHTML = titres;
+            document.getElementById("area_infos").innerHTML = infos;
         }
     };
+
     xhttp.open("GET", "MesFilms.xml", true);
     xhttp.send();
 }
+
 </script>
-=======
-
->>>>>>> 146540693f3af65017153e289e6c53bfc328f47e
-
-
-
 
 
 </body>
