@@ -19,15 +19,21 @@
 <h2>Requête .xml</h2>
 
 <!-- Bouton qui lance la méthode de chargement du xml -->
-<button onclick="getXML();">Charger le XML</button>
+<button onclick="getXML(), splitxml();">Charger le XML</button>
 
 <!-- Tableau recevant les valeurs -->
 <div id="table">
 
     <textarea id="area_films"  rows="20" cols="50"></textarea>
     <textarea id="area_titres"  rows="10" cols="30"></textarea>
+    <textarea id="area_split" rows="20" cols="30"></textarea>
     <br>
     <textarea id="area_infos"  rows="10" cols="83"></textarea>
+
+</div>
+
+<div>
+	
 
 </div>
 
@@ -74,7 +80,51 @@
     xhttp.send();
 }
 
-console.log(xhttp.split("<realisateur>"));
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+       myFunction(this);
+   }
+};
+
+
+	function splitxml()
+	{
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function()
+		{
+			if (xhttp.readyState == 4 && xhttp.status == 200)
+			{
+				var strDoc = this.responseText;
+
+				//création de split
+				var sTitre = strDoc.split('<titre>');
+				var sRealisateur = strDoc.split('<realisateur>');
+				var sDate = strDoc.split('<date>');
+
+				//création de tableau qui vous récup les chaine de caractère donner par les split
+				var tabTitre = [''];
+				var tabRealisateur = [''];
+				var tabDate = [''];
+
+				//traitement 
+				for (var i = 0; i < titre.length; i++) 
+				{
+					tabTitre[i]	= titre[i].split('</titre>');
+					tabRealisateur[i] = sRealisateur[i].split('</realisateur>');
+					tabDate[i] = sDate[i].split('</date>');
+
+					//affichage
+
+					document.getElementById('area_split').innerHTML += "Titre: " + tabTitre[i][0]+" / Realisateur: " + tabRealisateur[i][0] + " / Date: " + tabDate[i][0];
+				}
+
+			}
+		}
+		    xhttp.open("GET", "MesFilms.xml", true);
+  	 		xhttp.send();
+	}
+
 
 </script>
 
